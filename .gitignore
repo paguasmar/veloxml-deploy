@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# VeloxML local state and generated configs
+.veloxml/
+*.sky.yaml
+.sky/
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
