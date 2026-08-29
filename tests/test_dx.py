@@ -34,3 +34,28 @@ def test_cli_down_all_flag(monkeypatch):
     result = runner.invoke(app, ["down", "--name", "test-svc", "--all"])
     assert result.exit_code == 0
     assert calls == [True]
+
+def test_cli_check_success(monkeypatch):
+    monkeypatch.setattr(SkyPilotOrchestrator, "check_cloud", lambda: True)
+    result = runner.invoke(app, ["check"])
+    assert result.exit_code == 0
+    assert "AWS Connected & Verified" in result.stdout
+    assert "All systems operational" in result.stdout
+
+def test_cli_check_failure(monkeypatch):
+    monkeypatch.setattr(SkyPilotOrchestrator, "check_cloud", lambda: False)
+    result = runner.invoke(app, ["check"])
+    assert result.exit_code == 0
+    assert "Cloud Credentials Not Found" in result.stdout
+    assert "aws configure" in result.stdout
+
+def test_cli_logs_command(monkeypatch):
+    logs_called = []
+    def mock_get_logs(name, tail=100, follow=False):
+        logs_called.append((name, tail, follow))
+    monkeypatch.setattr(SkyPilotOrchestrator, "get_service_logs", mock_get_logs)
+    
+    result = runner.invoke(app, ["logs", "my-test-service", "--tail", "50"])
+    assert result.exit_code == 0
+    assert "Fetching logs for service 'my-test-service'" in result.stdout
+    assert logs_called == [("my-test-service", 50, False)]
