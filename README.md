@@ -15,9 +15,9 @@ This hands-on tutorial guides you through deploying a real Small Language Model 
 
 1. **Python 3.10+** installed.
 2. **AWS CLI** configured on your machine (`aws configure` with valid credentials).
-3. Verify cloud access:
+3. Verify cloud access with VeloxML:
    ```bash
-   sky check
+   veloxml check
    ```
 
 ---
@@ -167,13 +167,25 @@ curl -X POST http://<YOUR_REPLICA_IP>:8000/predict \
 ### 📊 Deployment Stats & FAQ
 
 #### ⏱️ How long did this deployment take?
-From running `veloxml deploy` to receiving the working `curl` command took **~2.5 minutes (cold start)**:
-- **AWS Spot Node Provisioning:** ~50s (bidding & spinning up `c6i.xlarge`).
-- **Runtime & PyTorch Environment:** ~40s (optimized CPU wheels).
-- **Hugging Face Weight Download (~270MB):** ~20s.
-- **FastAPI Startup & Readiness Probe:** ~15s.
 
-> ⚡ **Subsequent / Warm deploys take under 15 seconds.**
+From running `veloxml deploy` to receiving the working `curl` command took **~2 minutes (cold start)**:
+
+```mermaid
+gantt
+    title ⏱️ Cold Start Deployment Timeline (~2m Total)
+    dateFormat X
+    axisFormat %s sec
+    section 1. AWS Spot VM
+    Provisioning c6i.xlarge (50s)       :active, a1, 0, 50
+    section 2. Environment
+    PyTorch & Dependencies (40s)        :crit, a2, 50, 90
+    section 3. Model Weights
+    Download SmolLM2 ~270MB (20s)       :a3, 90, 110
+    section 4. Service Live
+    FastAPI Boot & Probe (15s)          :done, a4, 110, 125
+```
+
+> ⚡ **Subsequent / Warm code updates take under 15 seconds.**
 
 #### 🎯 Was it truly just one command?
 **Yes.** You do not need to:
