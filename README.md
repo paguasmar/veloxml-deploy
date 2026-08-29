@@ -176,13 +176,13 @@ From running `veloxml deploy` to receiving the working `curl` command took **~2 
 
 | Phase | Duration | Percentage | Description |
 | :--- | :---: | :---: | :--- |
-| **AWS Spot Provisioning** | `50s` | 40% | Bidding and booting EC2 `c6i.xlarge` in `us-east-1`. |
-| **PyTorch & Dependencies** | `40s` | 32% | Installing virtualenv & optimized CPU PyTorch wheels. |
-| **Download SmolLM2 Weights** | `20s` | 16% | Fetching ~270MB weights from Hugging Face Hub. |
-| **FastAPI Boot & Probe** | `15s` | 12% | Loading pipeline into RAM & passing `/health` probe. |
+| **Compute Provisioning** | `50s` | 40% | Spot instance allocation & host initialization. |
+| **Python Dependencies** | `40s` | 32% | Virtualenv & PyTorch runtime preparation. |
+| **Model Loading** | `20s` | 16% | Downloading weights (~270MB) & tensor initialization. |
+| **Network & Readiness** | `15s` | 12% | Server startup & passing health probes. |
 | **Total Cold Start** | **~2m 05s** | **100%** | **Zero-to-cURL live API endpoint on AWS.** |
 
-> ⚡ **Warm Code Updates:** Re-deploying updated code takes **under 15 seconds** (no VM or PyTorch re-installation required).
+> ⚡ **Warm Code Updates:** Re-deploying updated code takes **under 15 seconds** (no VM or dependency re-installation required).
 
 #### 🎯 Was it truly just one command?
 **Yes.** You do not need to:
