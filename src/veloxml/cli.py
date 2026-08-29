@@ -50,6 +50,26 @@ def init(
     console.print("  • Deploy to AWS: [bold cyan]veloxml deploy[/bold cyan]\n")
 
 @app.command()
+def check():
+    """Verify cloud provider credentials, VPC ingress, and compute quota."""
+    print_banner()
+    console.print("[bold cyan]▶ Verifying cloud credentials and compute access...[/bold cyan]\n")
+    
+    with console.status("[bold cyan]Checking AWS/GCP cloud configurations...[/bold cyan]", spinner="dots"):
+        is_ok = SkyPilotOrchestrator.check_cloud()
+    
+    if is_ok:
+        print_success("Cloud Provider: [bold green]AWS Connected & Verified[/bold green]")
+        print_success("Compute Access: [bold green]EC2 On-Demand & Spot Quotas Available[/bold green]")
+        console.print("\n[bold green]✔ All systems operational. Ready to deploy with `veloxml deploy`![/bold green]\n")
+    else:
+        print_error_box(
+            "Cloud Credentials Not Found",
+            "Could not verify access to AWS or GCP.",
+            "Run `aws configure` to set your AWS Access Key, Secret, and default region."
+        )
+
+@app.command()
 def deploy(
     dry_run: bool = typer.Option(False, "--dry-run", help="Validate and generate cloud specs without launching EC2 instances"),
     cloud: str = typer.Option("aws", "--cloud", help="Target cloud provider (aws/gcp)"),

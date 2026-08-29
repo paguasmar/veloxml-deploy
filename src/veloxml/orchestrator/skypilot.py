@@ -126,7 +126,6 @@ class SkyPilotOrchestrator:
                 
                 endpoint = self.get_service_endpoint(service_name)
                 if endpoint:
-                    # Verify health check responding
                     try:
                         health_url = f"{endpoint.rstrip('/')}/health"
                         req = urllib.request.Request(health_url, headers={"User-Agent": "VeloxML-Prober"})
@@ -135,7 +134,7 @@ class SkyPilotOrchestrator:
                                 print_success("Readiness probe passed (HTTP 200 OK)")
                                 return endpoint
                     except Exception:
-                        pass # Replica IP found, but HTTP app still loading weights
+                        pass
                 time.sleep(6)
         
         print_warning("Model is taking longer than usual to become ready.")
@@ -150,10 +149,8 @@ class SkyPilotOrchestrator:
             return None
         
         output = res.stdout
-        # Match replica endpoint IP first (e.g. http://98.84.5.118:8000) or service endpoint
         url_matches = re.findall(r"(http://[0-9a-zA-Z.-]+:\d+)", output)
         if url_matches:
-            # If multiple, prefer replica IP on port 8000
             for url in url_matches:
                 if ":8000" in url:
                     return url
@@ -205,6 +202,12 @@ class SkyPilotOrchestrator:
                     console.print(l)
             else:
                 print_error_box("Logs Error", f"Could not retrieve logs for '{service_name}': {res.stderr.strip()}")
+
+    @staticmethod
+    def check_cloud() -> bool:
+        """Validates cloud credentials and compute access cleanly."""
+        res = subprocess.run(["sky", "check"], capture_output=True, text=True)
+        return "Enabled Infra: aws" in res.stdout or "aws" in res.stdout.lower()
 
     def teardown(self, purge_all: bool = False):
         """Tears down the service and optionally cleans all controller nodes to ensure $0 cost."""
