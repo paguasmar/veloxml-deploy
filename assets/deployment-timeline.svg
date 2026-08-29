@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117" />
+      <stop offset="100%" stop-color="#161b22" />
+    </linearGradient>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="shadow" x="-2%" y="-5%" width="104%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Container Box -->
+  <rect x="10" y="10" width="800" height="200" rx="14" fill="url(#bg)" stroke="#30363d" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Total Time Badge -->
+  <text x="35" y="45" fill="#f0f6fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" letter-spacing="0.3">
+    ⚡ Cold Start Deployment Breakdown
+  </text>
+  
+  <rect x="650" y="27" width="135" height="26" rx="6" fill="#238636" fill-opacity="0.25" stroke="#2ea043" stroke-width="1"/>
+  <text x="717" y="44" fill="#3fb950" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" text-anchor="middle">
+    Total: ~2m 05s
+  </text>
+
+  <!-- Segmented Progress Bar Base -->
+  <rect x="35" y="70" width="750" height="26" rx="13" fill="#21262d" />
+
+  <!-- Segment 1: AWS Spot Provisioning (50s / 125s = 40%) -> width = 300 -->
+  <rect x="35" y="70" width="300" height="26" rx="13" fill="url(#grad1)" />
+  <!-- Segment 2: PyTorch Runtime (40s / 125s = 32%) -> width = 240 -->
+  <rect x="335" y="70" width="240" height="26" fill="url(#grad2)" />
+  <!-- Segment 3: HF Weights (20s / 125s = 16%) -> width = 120 -->
+  <rect x="575" y="70" width="120" height="26" fill="url(#grad3)" />
+  <!-- Segment 4: FastAPI Live (15s / 125s = 12%) -> width = 90 -->
+  <rect x="695" y="70" width="90" height="26" rx="13" fill="url(#grad4)" />
+
+  <!-- Legend & Time Labels -->
+  <!-- Col 1: AWS -->
+  <circle cx="45" cy="130" r="5" fill="#38bdf8" />
+  <text x="58" y="134" fill="#f0f6fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">AWS Spot VM (c6i.xlarge)</text>
+  <text x="58" y="152" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11">50s (40%)</text>
+
+  <!-- Col 2: Runtime -->
+  <circle cx="250" cy="130" r="5" fill="#818cf8" />
+  <text x="263" y="134" fill="#f0f6fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">PyTorch &amp; Deps Setup</text>
+  <text x="263" y="152" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11">40s (32%)</text>
+
+  <!-- Col 3: Model Weights -->
+  <circle cx="455" cy="130" r="5" fill="#fbbf24" />
+  <text x="468" y="134" fill="#f0f6fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">SmolLM2 Weights (~270MB)</text>
+  <text x="468" y="152" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11">20s (16%)</text>
+
+  <!-- Col 4: FastAPI Ready -->
+  <circle cx="675" cy="130" r="5" fill="#34d399" />
+  <text x="688" y="134" fill="#f0f6fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">FastAPI Ready</text>
+  <text x="688" y="152" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11">15s (12%)</text>
+
+  <!-- Sub-footer info -->
+  <line x1="35" y1="172" x2="785" y2="172" stroke="#30363d" stroke-width="1" />
+  <text x="35" y="193" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11">
+    ⚡ <tspan fill="#38bdf8" font-weight="600">Warm Updates:</tspan> Re-deploying code updates takes <tspan fill="#3fb950" font-weight="600">&lt;15 seconds</tspan> (no VM or dependency rebuild needed).
+  </text>
+</svg>
