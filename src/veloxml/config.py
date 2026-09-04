@@ -27,7 +27,7 @@ class RuntimeConfig(BaseModel):
 
 class VeloxConfig(BaseModel):
     name: str = Field(default="my-model-service")
-    version: str = "0.1.0"
+    version: str = "0.1.1"
     compute: ComputeConfig = Field(default_factory=ComputeConfig)
     service: ServiceConfig = Field(default_factory=ServiceConfig)
     runtime: RuntimeConfig = Field(default_factory=RuntimeConfig)
