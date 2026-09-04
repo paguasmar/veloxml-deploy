@@ -1,17 +1,7 @@
-name: velox-smollm
-version: 0.1.0
+name: smollm-service
 compute:
-  cloud: aws
-  region: us-east-1
   cpus: 4+
   memory: 8+
   use_spot: true
-service:
-  port: 8000
-  readiness_probe: /health
-  predict_path: /predict
-  min_replicas: 1
-  max_replicas: 1
 runtime:
-  command: uvicorn app:app --host 0.0.0.0 --port 8000
-  setup: pip install "fastapi>=0.110.0" "uvicorn>=0.29.0" "pydantic>=2.7.0" "transformers>=4.45.0" "accelerate" && pip install torch --index-url https://download.pytorch.org/whl/cpu
+  setup: pip install fastapi uvicorn transformers accelerate

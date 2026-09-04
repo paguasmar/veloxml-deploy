@@ -16,7 +16,8 @@ class ServiceConfig(BaseModel):
     readiness_probe: str = "/health"
     predict_path: str = "/predict"
     min_replicas: int = 1
-    max_replicas: int = 3
+    max_replicas: int = 1
+    target_qps: Optional[int] = 10
     auto_restart: bool = True
 
 class RuntimeConfig(BaseModel):
