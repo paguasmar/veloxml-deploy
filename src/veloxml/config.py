@@ -16,7 +16,8 @@ class ServiceConfig(BaseModel):
     readiness_probe: str = "/health"
     predict_path: str = "/predict"
     min_replicas: int = 1
-    max_replicas: int = 3
+    max_replicas: int = 1
+    target_qps: Optional[int] = 10
     auto_restart: bool = True
 
 class RuntimeConfig(BaseModel):
@@ -26,7 +27,7 @@ class RuntimeConfig(BaseModel):
 
 class VeloxConfig(BaseModel):
     name: str = Field(default="my-model-service")
-    version: str = "0.1.0"
+    version: str = "0.1.1"
     compute: ComputeConfig = Field(default_factory=ComputeConfig)
     service: ServiceConfig = Field(default_factory=ServiceConfig)
     runtime: RuntimeConfig = Field(default_factory=RuntimeConfig)

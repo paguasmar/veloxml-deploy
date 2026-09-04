@@ -19,7 +19,7 @@ custom_theme = Theme({
 console = Console(theme=custom_theme)
 
 LOGO = """[bold cyan]
-  ⚡ VeloxML[/bold cyan] [dim]v0.1.0[/dim]  [dim italic]Push to API in one command (AWS / GCP)[/dim italic]
+  🛸 VeloxML[/bold cyan] [dim]v0.1.1[/dim]  [dim italic]Push to API in one command (AWS / GCP)[/dim italic]
 """
 
 def print_banner():
@@ -75,7 +75,7 @@ def print_curl_box(service_name: str, endpoint_url: str, sample_payload: str = '
     console.print()
     console.print(Panel(
         body,
-        title="[bold green]⚡ VeloxML Deployment Success ⚡[/bold green]",
+        title="[bold green]🛸 VeloxML Deployment Success 🛸[/bold green]",
         border_style="green",
         padding=(1, 2),
         expand=False
@@ -90,7 +90,7 @@ def print_services_table(services: List[Dict[str, Any]]):
         return
 
     table = Table(
-        title="⚡ Active VeloxML Services",
+        title="🛸 Active VeloxML Services",
         header_style="bold cyan",
         border_style="dim",
         expand=True,
@@ -105,10 +105,14 @@ def print_services_table(services: List[Dict[str, Any]]):
         status = s.get("status", "UNKNOWN")
         if status == "READY":
             status_badge = "[bold green]● READY[/bold green]"
+        elif status in ("WARMING_UP", "NO_REPLICA"):
+            status_badge = "[bold yellow]○ WARMING_UP[/bold yellow]"
         elif status in ("STARTING", "PROVISIONING", "INITIALIZING"):
             status_badge = "[bold yellow]○ STARTING[/bold yellow]"
-        elif status == "SHUTTING_DOWN":
+        elif status in ("SHUTTING_DOWN", "STOPPING"):
             status_badge = "[bold red]◌ STOPPING[/bold red]"
+        elif status == "FAILED":
+            status_badge = "[bold red]✖ FAILED[/bold red]"
         else:
             status_badge = f"[dim]{status}[/dim]"
 

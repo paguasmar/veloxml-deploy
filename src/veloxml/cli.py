@@ -20,7 +20,7 @@ from veloxml.ui.console import (
 
 app = typer.Typer(
     name="veloxml",
-    help="VeloxML ⚡ - Push to API in one command. Serverless ML deployment in your AWS/GCP account.",
+    help="VeloxML 🛸 - Push to API in one command. Serverless ML deployment in your AWS/GCP account.",
     no_args_is_help=True,
     add_completion=False,
 )

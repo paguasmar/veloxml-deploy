@@ -59,3 +59,18 @@ def test_cli_logs_command(monkeypatch):
     assert result.exit_code == 0
     assert "Fetching logs for service 'my-test-service'" in result.stdout
     assert logs_called == [("my-test-service", 50, False)]
+
+def test_cli_status_warming_up(monkeypatch):
+    mock_services = [{
+        "name": "smollm-test",
+        "version": "1",
+        "uptime": "1m",
+        "status": "WARMING_UP",
+        "replicas": "0/1",
+        "endpoint": "http://1.2.3.4:30001",
+    }]
+    monkeypatch.setattr(SkyPilotOrchestrator, "list_services", lambda: mock_services)
+    result = runner.invoke(app, ["status"])
+    assert result.exit_code == 0
+    assert "smollm-test" in result.stdout
+    assert "WARMING_UP" in result.stdout

@@ -19,3 +19,14 @@ def test_save_and_load_config():
         loaded = VeloxConfig.load_or_default(config_path)
         assert loaded.name == "custom-model"
         assert loaded.compute.accelerator == "T4:1"
+
+def test_orchestrator_generate_spec():
+    from veloxml.orchestrator.skypilot import SkyPilotOrchestrator
+    cfg = VeloxConfig(name="test-spec")
+    cfg.runtime.setup = "pip install fastapi"
+    orch = SkyPilotOrchestrator(cfg)
+    spec = orch.generate_skyserve_spec()
+    assert spec["resources"]["cloud"] == "aws"
+    assert spec["service"]["replica_policy"]["min_replicas"] == 1
+    assert "pip install fastapi" in spec["setup"]
+    assert spec["run"] == "uvicorn app:app --host 0.0.0.0 --port 8000"
