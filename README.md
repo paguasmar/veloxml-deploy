@@ -151,9 +151,6 @@ curl -X POST http://<ENDPOINT_IP>:8000/predict \
   -d '{"prompt": "Say this is a test"}'
 ```
 
-100ms
-10frames
-
 Output:
 ```json
 {
